@@ -3,6 +3,7 @@ import axios from 'axios';
 import './App.css';
 import Header from './components/Header';
 import MovieScreen from './components/MovieScreen';
+import Watchlist from './components/Watchlist';
 
 function App() {
   const [movieList, setMovieList] = useState([]);
@@ -17,15 +18,27 @@ function App() {
     });
   };
 
+  const addMovie = (movie) => {
+    setWatchList([...watchList, movie])
+  }
+
+  const removeMovie = (movie) => {
+    let newState = watchList.filter((mov) => {
+      return mov !== movie
+    });
+    setWatchList(newState)
+  }
+
   useEffect(() => {
     getData();
-  }, [page])
+  }, [page]);
 
   return (
     <div className="App">
       <Header />
       <main>
-        <MovieScreen movieList={movieList} page={page} setPage={setPage} watchList={watchList}/>
+        <MovieScreen movieList={movieList} page={page} setPage={setPage} watchList={watchList} addMovie={addMovie} removeMovie={removeMovie}/>
+        <Watchlist watchList={watchList} removeMovie={removeMovie}/>
       </main>
     </div>
   );
